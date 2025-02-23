@@ -5,6 +5,7 @@ import { installPackage, removePackage, updatePackage } from './install';
 import { analyzeProject, suggestDependencies } from './ai';
 import { setApiKey } from './config';
 import { auditProject } from './audit';
+import { runCommand } from './run';
 
 const program: Command = new Command();
 
@@ -76,6 +77,13 @@ program
   .description('Audit project dependencies and display dependency graph')
   .action(async () => {
     await auditProject(process.cwd());
+  });
+
+program
+  .command('run <script>')
+  .description('Run a script for the project (e.g., dev, build, start)')
+  .action(async (script: string) => {
+    await runCommand(process.cwd(), script);
   });
 
 program.parse(process.argv);
